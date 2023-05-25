@@ -2,7 +2,16 @@ const Sequelize = require("sequelize");
 const db = require("../db");
 const bcrypt = require("bcrypt");
 
-class Users extends Sequelize.Model {}
+class Users extends Sequelize.Model {
+  async hash(plainPassword, salt) {
+    return bcrypt.hash(plainPassword, salt);
+  }
+
+  async validatePassword(password) {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.password;
+  }
+}
 
 Users.init(
   {
@@ -31,5 +40,13 @@ Users.init(
     modelName: "users",
   }
 );
+
+Users.beforeCreate(async (user) => {
+  const salt = bcrypt.genSaltSync(8);
+  user.salt = salt;
+
+  const hash = await user.hash(user.password, user.salt);
+  user.password = hash;
+});
 
 module.exports = Users;
