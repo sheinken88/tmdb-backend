@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const db = require("../db");
+const db = require("../config/db");
 const bcrypt = require("bcrypt");
 
 class Users extends Sequelize.Model {
@@ -33,6 +33,10 @@ Users.init(
     },
     salt: {
       type: Sequelize.STRING,
+    },
+    favorites: {
+      type: Sequelize.JSON,
+      defaultValue: [],
     },
   },
   {
