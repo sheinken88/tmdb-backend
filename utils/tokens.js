@@ -1,4 +1,4 @@
-const secret = "secret";
+const secret = "fideos";
 const jwt = require("jsonwebtoken");
 function generateToken(payload) {
   const token = jwt.sign({ payload }, secret, {
