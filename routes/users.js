@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const usersController = require("../controllers/usersController");
+const userController = require("../controllers/userController");
 const validateUser = require("../middleware/auth");
 
 
-router.post("/signup", usersController.signup);
-router.post("/login", usersController.login);
+router.post("/signup", userController.signup);
+router.post("/login", userController.login);
+router.post("/logout", userController.logout);
 
-
-router.get("/me", validateUser, usersController.me);
-router.post("/logout", validateUser, usersController.logout);
-router.put("/:userId/addFavorite", validateUser, usersController.addToFavorites);
-router.put("/:userId/removeFavorite", validateUser, usersController.removeFromFavorites);
+router.get("/secret", userController.secret);
+router.get("/me", validateUser, userController.me);
+router.put("/:userId/addFavorite", validateUser, userController.addToFavorites);
+router.put("/:userId/removeFavorite", validateUser, userController.removeFromFavorites);
 
 module.exports = router;
