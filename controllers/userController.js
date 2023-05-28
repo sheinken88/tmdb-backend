@@ -1,23 +1,22 @@
 const { generateToken, validateToken } = require("../utils/tokens");
-const { Users } = require("../models/Users");
+const MovieService = require("../services/movieService");
+const userService = require("../services/userService");
 
 const login = async (req, res) => {
   try {
-    const user = await Users.findOne({
-      where: { email: req.body.email },
-    });
+    const user = await userService.findUserByEmail(req.body.email);
 
     if (!user) {
       return res.sendStatus(401);
     }
-
-    const { id, email, username, favorites } = user;
 
     const isValid = await user.validatePassword(req.body.password);
 
     if (!isValid) {
       return res.sendStatus(401);
     }
+
+    const { id, username, email, favorites } = user;
 
     const token = generateToken({
       id,
@@ -35,7 +34,7 @@ const login = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
-    await Users.create(req.body);
+    await userService.createUser(req.body);
     res.sendStatus(200);
   } catch (err) {
     res.status(404).send(err);
@@ -62,22 +61,14 @@ const addToFavorites = async (req, res) => {
     const userId = req.params.userId;
     const movieId = req.body.movieId;
 
-    const user = await Users.findByPk(userId);
-    if (!user) {
-      return res.status(404).send("User not found");
+    const newFavorites = await userService.addFavorite(userId, movieId);
+    
+    if (newFavorites instanceof Error) {
+      return res.status(newFavorites.status).send(newFavorites.message);
     }
 
-    let favorites = user.favorites;
+    return res.status(200).send(newFavorites);
 
-    if (!favorites.some((movie) => movie.id === movieId)) {
-      const { data: movie } = await MoviesService.getMovie(movieId);
-      favorites.push(movie);
-      await user.update({ favorites });
-
-      return res.status(200).send(favorites);
-    } else {
-      return res.status(409).send("Movie is already in favorites");
-    }
   } catch (error) {
     res.status(500).send("Error adding favorite");
   }
@@ -88,25 +79,21 @@ const removeFromFavorites = async (req, res) => {
     const userId = req.params.userId;
     const movieId = req.body.movieId;
 
-    const user = await Users.findByPk(userId);
-    if (!user) {
-      return res.status(404).send("User not found");
+    const newFavorites = await userService.removeFavorite(userId, movieId);
+    
+    if (newFavorites instanceof Error) {
+      return res.status(newFavorites.status).send(newFavorites.message);
     }
 
-    let favorites = user.favorites;
+    return res.status(200).send(newFavorites);
 
-    if (favorites.some((movie) => movie.id === movieId)) {
-      favorites = favorites.filter((movie) => movie.id !== movieId);
-      await user.update({ favorites });
-
-      return res.status(200).send(favorites);
-    } else {
-      return res.status(404).send("Movie is not in favorites");
-    }
   } catch (error) {
     res.status(500).send("Error removing favorite");
   }
 };
+
+
+
 
 module.exports = {
   login,
