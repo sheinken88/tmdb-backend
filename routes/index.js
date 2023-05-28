@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 
-const usersRouter = require("./routes/users");
-const moviesRouter = require("./routes/movies");
-const searchRouter = require("./routes/search");
+const usersRouter = require("./users");
+const moviesRouter = require("./movies");
+const searchRouter = require("./search");
 
 app.use("/users", usersRouter);
 app.use("/movies", moviesRouter);
