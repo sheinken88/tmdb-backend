@@ -4,29 +4,24 @@ const userService = require("../services/userService");
 
 const login = async (req, res) => {
   try {
-    const user = await userService.findUserByEmail(req.body.email);
+    const user = await userService.validateUserPassword(req.body.email, req.body.password);
 
     if (!user) {
       return res.sendStatus(401);
     }
 
-    const isValid = await user.validatePassword(req.body.password);
-
-    if (!isValid) {
-      return res.sendStatus(401);
-    }
-
-    const { id, username, email, favorites } = user;
+    const { id, userName, email, favorites } = user;
 
     const token = generateToken({
       id,
-      username,
+      userName,
       email,
       favorites,
     });
 
     res.cookie("token", token);
-    res.sendStatus(200);
+    res.status(200).json(user);
+
   } catch (err) {
     res.status(404).send(err);
   }
@@ -34,8 +29,10 @@ const login = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
+
     await userService.createUser(req.body);
-    res.sendStatus(200);
+    res.sendStatus(200)
+
   } catch (err) {
     res.status(404).send(err);
   }

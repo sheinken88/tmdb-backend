@@ -1,12 +1,33 @@
-const { Users } = require("../models/Users");
+const Users = require("../models/Users");
 const {MovieService} = require("./movieService")
 
 const findUserByEmail = async (email) => {
     return Users.findOne({ where: { email } });
 };
 
+const validateUserPassword = async (email, password) => {
+    const user = await Users.findOne({ where: { email } });
+
+    if (!user) {
+        return null;
+    }
+
+    const isValid = await user.validatePassword(password);
+    
+    if (!isValid) {
+        return null;
+    }
+
+    return user;
+};
+
 const createUser = async (userInfo) => {
-    return Users.create(userInfo);
+    try {
+        return await Users.create(userInfo);
+    } catch (error) {
+        console.log("Error creating user:", error);
+        throw error;  
+    }
 };
 
 const findUserById = async (id) => {
@@ -61,6 +82,7 @@ const removeFavorite = async (userId, movieId) => {
 
 module.exports = {
     findUserByEmail,
+    validateUserPassword,
     createUser,
     findUserById,
     addFavorite,
