@@ -11,7 +11,8 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5173", //if used in linux
+    // origin: "http://127.0.0.1:5173", //if used in mac
     credentials: true,
   })
 );
