@@ -15,7 +15,7 @@ const getMovieDetails = async (req, res) => {
 const getPopularMovies = async (req, res) => {
   try {
     const q = req.query;
-    const { error, data } = await MovieService.getPopular(q);
+    const { error, data } = await MovieService.getPopularMovies(q);
     if (error) {
       return res.status(500).send(data);
     }
@@ -28,7 +28,7 @@ const getPopularMovies = async (req, res) => {
 const getUpcomingMovies = async (req, res) => {
   try {
     const q = req.query;
-    const { error, data } = await MovieService.getUpcoming(q);
+    const { error, data } = await MovieService.getUpcomingMovies(q);
     if (error) {
       return res.status(500).send(data);
     }
@@ -41,7 +41,7 @@ const getUpcomingMovies = async (req, res) => {
 const getTopRatedMovies = async (req, res) => {
   try {
     const q = req.query;
-    const { error, data } = await MovieService.getTopRated(q);
+    const { error, data } = await MovieService.getTopRatedMovies(q);
     if (error) {
       return res.status(500).send(data);
     }
