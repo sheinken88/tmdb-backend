@@ -34,7 +34,7 @@ const getUpcomingMovies = async (req, res) => {
     }
     res.status(200).send(data);
   } catch (error) {
-    res.status(500).send({ message: 'An error occurred while fetching upcoming movies.' });
+    res.status(500).send({ message: "An error occurred while fetching upcoming movies." });
   }
 };
 
@@ -47,7 +47,7 @@ const getTopRatedMovies = async (req, res) => {
     }
     res.status(200).send(data);
   } catch (error) {
-    res.status(500).send({ message: 'An error occurred while fetching top-rated movies.' });
+    res.status(500).send({ message: "An error occurred while fetching top-rated movies." });
   }
 };
 
