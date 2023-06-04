@@ -1,9 +1,9 @@
-const MovieService = require("../services/searchService");
+const SearchService = require("../services/searchService");
 
 const searchMovies = async (req, res) => {
   const query = req.query.query;
 
-  const { error, data } = await MovieService.searchMovies(query);
+  const { error, data } = await SearchService.searchMovies(query);
   
   if (error) {
     console.error("Error:", data);
