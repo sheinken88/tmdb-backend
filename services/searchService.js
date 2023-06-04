@@ -6,14 +6,16 @@ const apiKey = config.APIKEY
 
 
 
-const searchMovies = async (query) => {
+const searchMovies = async (query) => { 
   try {
     const response = await axios.get(
       `${urlAPI}/search/movie?${apiKey}&query=${query}&page=1`
     );
+
     return { error: null, data: response.data.results };
+
   } catch (error) {
-    console.error();
+    console.error("Axios error: ", error);
     return { error: true, data: error };
   }
 };
