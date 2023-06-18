@@ -15,5 +15,6 @@ router.put(
   validateUser,
   userController.removeFromFavorites
 );
+router.get("/:userId/favorites", validateUser, userController.getFavorites);
 
 module.exports = router;

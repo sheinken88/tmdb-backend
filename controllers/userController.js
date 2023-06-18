@@ -58,6 +58,8 @@ const addToFavorites = async (req, res) => {
     const userId = req.params.userId;
     const movieId = req.body.movieId;
 
+    console.log("movieId: ", movieId, "userId: ", userId);
+
     const newFavorites = await userService.addFavorite(userId, movieId);
 
     if (newFavorites instanceof Error) {
@@ -87,6 +89,20 @@ const removeFromFavorites = async (req, res) => {
   }
 };
 
+const getFavorites = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const favorites = await userService.getFavorites(userId);
+
+    console.log("favorites", favorites);
+    res.status(200).json(favorites);
+  } catch (error) {
+    // Handle error
+    console.error(error);
+    res.status(500).json({ message: "Error fetching favorites" });
+  }
+};
+
 module.exports = {
   login,
   signup,
@@ -95,4 +111,5 @@ module.exports = {
   me,
   addToFavorites,
   removeFromFavorites,
+  getFavorites,
 };

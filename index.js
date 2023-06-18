@@ -17,10 +17,9 @@ app.use(
   })
 );
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.use("/", routes);
-
 
 const force = false;
 
@@ -28,7 +27,7 @@ const force = false;
   try {
     await db.sync({ force });
 
-    app.listen(8080, () => console.log("Server listening on port 8080"));
+    app.listen(8081, () => console.log("Server listening on port 8081"));
   } catch (error) {
     console.error(error);
   }
