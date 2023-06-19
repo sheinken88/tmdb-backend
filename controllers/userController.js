@@ -58,8 +58,6 @@ const addToFavorites = async (req, res) => {
     const userId = req.params.userId;
     const movieId = req.body.movieId;
 
-    console.log("movieId: ", movieId, "userId: ", userId);
-
     const newFavorites = await userService.addFavorite(userId, movieId);
 
     if (newFavorites instanceof Error) {
@@ -68,6 +66,11 @@ const addToFavorites = async (req, res) => {
 
     return res.status(200).send(newFavorites);
   } catch (error) {
+    if (error.message === "Movie already favorited") {
+      return res
+        .status(400)
+        .json({ message: "This movie is already in your favorites list." });
+    }
     res.status(500).send("Error adding favorite");
   }
 };
@@ -83,6 +86,7 @@ const removeFromFavorites = async (req, res) => {
       return res.status(newFavorites.status).send(newFavorites.message);
     }
 
+    console.log("newFavorites: ", newFavorites);
     return res.status(200).send(newFavorites);
   } catch (error) {
     res.status(500).send("Error removing favorite");
@@ -94,10 +98,8 @@ const getFavorites = async (req, res) => {
     const userId = req.params.userId;
     const favorites = await userService.getFavorites(userId);
 
-    console.log("favorites", favorites);
     res.status(200).json(favorites);
   } catch (error) {
-    // Handle error
     console.error(error);
     res.status(500).json({ message: "Error fetching favorites" });
   }

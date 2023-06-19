@@ -43,7 +43,6 @@ const findUserById = async (id) => {
 const addFavorite = async (userId, movieId) => {
   try {
     const user = await Users.findByPk(userId);
-
     const movieIdInt = parseInt(movieId);
 
     if (user.favorites.includes(movieIdInt)) {
@@ -52,7 +51,11 @@ const addFavorite = async (userId, movieId) => {
 
     user.favorites = [...user.favorites, movieIdInt];
     await user.save();
-    return user;
+
+    const response = await axios.get(
+      `${urlAPI}/movie/${movieIdInt}?api_key=${apiKey}&language=es-ES`
+    );
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -62,9 +65,19 @@ const addFavorite = async (userId, movieId) => {
 const removeFavorite = async (userId, movieId) => {
   try {
     const user = await Users.findByPk(userId);
+    const movieIdInt = parseInt(movieId);
     user.favorites = user.favorites.filter((id) => id !== movieId);
     await user.save();
-    return user;
+
+    const updatedFavorites = await Promise.all(
+      user.favorites.map(async (favMovieId) => {
+        const response = await axios.get(
+          `${urlAPI}/movie/${favMovieId}?api_key=${apiKey}&language=es-ES`
+        );
+        return response.data;
+      })
+    );
+    return updatedFavorites;
   } catch (error) {
     console.error(error);
     throw error;
