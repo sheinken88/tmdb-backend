@@ -2,6 +2,7 @@ const MovieService = require("../services/movieService");
 
 const getMovieDetails = async (req, res) => {
   const movieId = req.params.movieId;
+  console.log("movieId: ", req.params.movieId);
 
   const { error, data } = await MovieService.getMovie(movieId);
 
