@@ -18,9 +18,10 @@ const getMovie = async (movieId) => {
 
 const getPopularMovies = async (query) => {
   try {
-    const response = await axios.get(
-      `${urlAPI}/movie/popular?api_key=${apiKey}&language=es-ES`
-    );
+    const page = query.page || 1;
+    const requestURL = `${urlAPI}/movie/popular?api_key=${apiKey}&language=es-ES&page=${page}`;
+    const response = await axios.get(requestURL);
+
     return { error: null, data: response.data };
   } catch (error) {
     console.error("Error in getPopularMovies", error);
@@ -30,9 +31,10 @@ const getPopularMovies = async (query) => {
 
 const getTopRatedMovies = async (query) => {
   try {
-    const response = await axios.get(
-      `${urlAPI}/movie/top_rated?api_key=${apiKey}&language=es-ES`
-    );
+    const page = query.page || 1;
+    const requestURL = `${urlAPI}/movie/top_rated?api_key=${apiKey}&language=es-ES&page=${page}`;
+    const response = await axios.get(requestURL);
+
     return { error: null, data: response.data };
   } catch (error) {
     console.error(error);
@@ -42,9 +44,10 @@ const getTopRatedMovies = async (query) => {
 
 const getUpcomingMovies = async (query) => {
   try {
-    const response = await axios.get(
-      `${urlAPI}/movie/upcoming?api_key=${apiKey}&language=es-ES`
-    );
+    const page = query.page || 1;
+    const requestURL = `${urlAPI}/movie/upcoming?api_key=${apiKey}&language=es-ES&page=${page}`;
+    const response = await axios.get(requestURL);
+
     return { error: null, data: response.data };
   } catch (error) {
     console.error(error);
