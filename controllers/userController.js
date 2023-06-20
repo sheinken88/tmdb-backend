@@ -86,7 +86,6 @@ const removeFromFavorites = async (req, res) => {
       return res.status(newFavorites.status).send(newFavorites.message);
     }
 
-    console.log("newFavorites: ", newFavorites);
     return res.status(200).send(newFavorites);
   } catch (error) {
     res.status(500).send("Error removing favorite");

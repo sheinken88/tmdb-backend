@@ -9,6 +9,7 @@ const getMovie = async (movieId) => {
     const response = await axios.get(
       `${urlAPI}/movie/${movieId}?api_key=${apiKey}&language=es-ES`
     );
+    console.log("response.data: ", response.data);
     return { error: null, data: response.data };
   } catch (error) {
     console.error("Error in getMovie", error);

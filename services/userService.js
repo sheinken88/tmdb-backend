@@ -31,7 +31,7 @@ const createUser = async (userInfo) => {
   try {
     return await Users.create(userInfo);
   } catch (error) {
-    console.log("Error creating user:", error);
+    console.error("Error creating user:", error);
     throw error;
   }
 };
