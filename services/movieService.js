@@ -9,10 +9,22 @@ const getMovie = async (movieId) => {
     const response = await axios.get(
       `${urlAPI}/movie/${movieId}?api_key=${apiKey}&language=es-ES`
     );
-    console.log("response.data: ", response.data);
+
     return { error: null, data: response.data };
   } catch (error) {
     console.error("Error in getMovie", error);
+    return { error: true, data: error };
+  }
+};
+
+const getSimilarMovies = async (movieId) => {
+  try {
+    const requestURL = `${urlAPI}/movie/${movieId}/similar?api_key=${apiKey}&language=en-US&page=1`;
+    const response = await axios.get(requestURL);
+
+    return { error: null, data: response.data };
+  } catch (error) {
+    console.error("Error in getSimilarMovies", error);
     return { error: true, data: error };
   }
 };
@@ -58,6 +70,7 @@ const getUpcomingMovies = async (query) => {
 
 module.exports = {
   getMovie,
+  getSimilarMovies,
   getPopularMovies,
   getUpcomingMovies,
   getTopRatedMovies,

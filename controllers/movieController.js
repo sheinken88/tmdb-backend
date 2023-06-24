@@ -1,16 +1,37 @@
 const MovieService = require("../services/movieService");
 
+// const getMovieDetails = async (req, res) => {
+//   const movieId = req.params.movieId;
+
+//   const { error, data } = await MovieService.getMovie(movieId);
+
+//   if (error) {
+//     return res.status(500).send(data);
+//   }
+
+//   res.status(200).send(data);
+// };
+
 const getMovieDetails = async (req, res) => {
   const movieId = req.params.movieId;
-  console.log("movieId: ", req.params.movieId);
+  console.log("Server received movieId: ", movieId);
 
-  const { error, data } = await MovieService.getMovie(movieId);
+  const { error: movieError, data: movieData } = await MovieService.getMovie(
+    movieId
+  );
 
-  if (error) {
-    return res.status(500).send(data);
+  if (movieError) {
+    return res.status(500).send(movieData);
   }
 
-  res.status(200).send(data);
+  const { error: similarError, data: similarData } =
+    await MovieService.getSimilarMovies(movieId);
+
+  if (similarError) {
+    return res.status(500).send(similarData);
+  }
+
+  res.status(200).send({ movieDetails: movieData, similarMovies: similarData });
 };
 
 const getPopularMovies = async (req, res) => {
