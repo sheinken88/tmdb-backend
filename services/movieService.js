@@ -29,6 +29,18 @@ const getSimilarMovies = async (movieId) => {
   }
 };
 
+const getMovieActors = async (movieId) => {
+  try {
+    const response = await axios.get(
+      `${urlAPI}/movie/${movieId}/credits?api_key=${apiKey}`
+    );
+    return { error: null, data: response.data.cast };
+  } catch (error) {
+    console.error(error);
+    return { error: true, data: error };
+  }
+};
+
 const getPopularMovies = async (query) => {
   try {
     const page = query.page || 1;
@@ -71,6 +83,7 @@ const getUpcomingMovies = async (query) => {
 module.exports = {
   getMovie,
   getSimilarMovies,
+  getMovieActors,
   getPopularMovies,
   getUpcomingMovies,
   getTopRatedMovies,

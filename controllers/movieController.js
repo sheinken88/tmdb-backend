@@ -1,20 +1,7 @@
 const MovieService = require("../services/movieService");
 
-// const getMovieDetails = async (req, res) => {
-//   const movieId = req.params.movieId;
-
-//   const { error, data } = await MovieService.getMovie(movieId);
-
-//   if (error) {
-//     return res.status(500).send(data);
-//   }
-
-//   res.status(200).send(data);
-// };
-
 const getMovieDetails = async (req, res) => {
   const movieId = req.params.movieId;
-  console.log("Server received movieId: ", movieId);
 
   const { error: movieError, data: movieData } = await MovieService.getMovie(
     movieId
@@ -32,6 +19,23 @@ const getMovieDetails = async (req, res) => {
   }
 
   res.status(200).send({ movieDetails: movieData, similarMovies: similarData });
+};
+
+const getMovieActors = async (req, res) => {
+  const movieId = req.params.movieId;
+  try {
+    const { error, data } = await MovieService.getMovieActors(movieId);
+
+    if (error) {
+      return res.status(500).send(data);
+    }
+
+    res.send(data);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "An error occurred while fetching actors." });
+  }
 };
 
 const getPopularMovies = async (req, res) => {
@@ -91,6 +95,7 @@ const getTopRatedMovies = async (req, res) => {
 
 module.exports = {
   getMovieDetails,
+  getMovieActors,
   getPopularMovies,
   getUpcomingMovies,
   getTopRatedMovies,
