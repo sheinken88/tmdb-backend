@@ -22,7 +22,11 @@ const login = async (req, res) => {
       favorites,
     });
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      secure: true,
+      httpOnly: true,
+    });
+
     res.status(200).json(user);
   } catch (err) {
     res.status(404).send(err);
