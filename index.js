@@ -11,7 +11,10 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://tmdb-frontend-six.vercel.app",
+    origin: [
+      "https://tmdb-frontend-six.vercel.app",
+      "https://tmdb-frontend.onrender.com",
+    ],
     credentials: true,
   })
 );
