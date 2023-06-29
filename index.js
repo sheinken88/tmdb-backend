@@ -9,12 +9,11 @@ const app = express();
 
 app.use(express.json());
 
+const origins = process.env.CORS_ORIGIN.split(",");
+
 app.use(
   cors({
-    origin: [
-      "https://tmdb-frontend-six.vercel.app",
-      "https://tmdb-frontend.onrender.com",
-    ],
+    origin: origins,
     credentials: true,
   })
 );
