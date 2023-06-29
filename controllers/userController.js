@@ -25,7 +25,7 @@ const login = async (req, res) => {
     res.cookie("token", token, {
       secure: true,
       httpOnly: true,
-      domain: ".tmdb-frontend.onrender.com",
+      domain: ".onrender.com",
     });
 
     res.status(200).json(user);
