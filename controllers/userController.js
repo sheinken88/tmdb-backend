@@ -22,12 +22,16 @@ const login = async (req, res) => {
       favorites,
     });
 
-    res.cookie("token", token, {
-      secure: true,
-      httpOnly: true,
-      sameSite: "none",
-      domain: ".onrender.com",
-    });
+    res.cookie(
+      "token",
+      token
+      // {
+      //   secure: true,
+      //   httpOnly: true,
+      //   sameSite: "none",
+      //   domain: ".onrender.com",
+      // }
+    );
 
     res.status(200).json(user);
   } catch (err) {
