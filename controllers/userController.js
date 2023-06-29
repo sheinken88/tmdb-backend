@@ -24,7 +24,7 @@ const login = async (req, res) => {
 
     res.cookie("token", token, {
       secure: true,
-      httpOnly: true,
+      // httpOnly: true,
     });
 
     res.status(200).json(user);
