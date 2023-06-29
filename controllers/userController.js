@@ -25,6 +25,7 @@ const login = async (req, res) => {
     res.cookie("token", token, {
       secure: true,
       httpOnly: true,
+      sameSite: "none",
       domain: ".onrender.com",
     });
 
