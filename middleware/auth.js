@@ -1,14 +1,21 @@
 const { validateToken } = require("../utils/tokens");
 
 function validateUser(req, res, next) {
-  const token = req.cookies.token;
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+
   if (token) {
-    const { payload } = validateToken(token);
+    try {
+      const { payload } = validateToken(token);
+      req.user = payload;
 
-    req.user = payload;
-
-    if (payload) return next();
+      if (payload) return next();
+    } catch (error) {
+      console.error(error);
+      return res.sendStatus(401);
+    }
+  } else {
+    res.sendStatus(401);
   }
-  res.sendStatus(401);
 }
 module.exports = validateUser;

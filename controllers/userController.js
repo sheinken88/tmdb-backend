@@ -22,14 +22,7 @@ const login = async (req, res) => {
       favorites,
     });
 
-    res.cookie("token", token, {
-      secure: true,
-      httpOnly: true,
-      sameSite: "none",
-      domain: ".onrender.com",
-    });
-
-    res.status(200).json(user);
+    res.status(200).json({ user, token });
   } catch (err) {
     res.status(404).send(err);
   }
@@ -72,6 +65,7 @@ const addToFavorites = async (req, res) => {
 
     return res.status(200).send(newFavorites);
   } catch (error) {
+    console.error(error);
     if (error.message === "Movie already favorited") {
       return res
         .status(400)
