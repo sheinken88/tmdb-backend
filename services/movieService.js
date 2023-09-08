@@ -1,6 +1,18 @@
 const axios = require("axios");
 const config = require("../config/index");
 
+const axiosRetry = require("axios-retry");
+
+axiosRetry(axios, {
+  retries: 5,
+  retryDelay: (retryCount) => {
+    return retryCount * 2000;
+  },
+  retryCondition: (error) => {
+    return error.response.status === 500;
+  },
+});
+
 const urlAPI = config.URLAPI;
 const apiKey = config.APIKEY;
 
