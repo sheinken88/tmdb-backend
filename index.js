@@ -24,14 +24,13 @@ app.use("/", routes);
 
 const force = false;
 
+app.listen(8082, () => console.log("Server listening on port 8082"));
+
 (async () => {
   try {
     await db.sync({ force });
-
-    app.listen(8082, () => console.log("Server listening on port 8082"));
+    console.log("DB Synced");
   } catch (error) {
-    console.error(error);
+    console.error("DB Sync failed:", error);
   }
 })();
-
-module.exports = app;
